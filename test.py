@@ -4,13 +4,14 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from databaseTESTBOT import add_user, check_user_register
+from databaseTESTBOT import add_user, check_user_register, all_info
+from config import TOKEN
 
-TOKEN_API = ''
+
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=TOKEN_API)
+bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 def line_button():
@@ -36,13 +37,23 @@ async def send_welcome(message: types.Message):
 
 @dp.message(Command("register"))
 async def register_user(message: types.Message):
+    
     telegram_id = message.from_user.id
+    user_data = check_user_register(telegram_id)
     name = message.from_user.first_name
-    if check_user_register(telegram_id) is None:
+    if user_data is None:
         add_user(telegram_id, name)
         await message.answer("You are successfully registered!")
     else:
-        await message.answer(f"Welcome {message.from_user.first_name}")
+        await message.answer(f"""Welcome  
+{user_data[0]}\n
+{user_data[1]}\n
+{user_data[2]}
+
+""")
+       
+
+
 
 
 #Кнопки инлайн (под сообщением)
