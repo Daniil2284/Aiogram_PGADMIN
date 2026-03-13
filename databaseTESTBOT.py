@@ -26,14 +26,13 @@ try:
         cur.execute("INSERT INTO personBOT (telegram_id, name) VALUES (%s,%s) ON CONFLICT (telegram_id) DO NOTHING", (telegram_id, name))
 
     def check_user_register(telegram_id):
-        cur.execute("SELECT * FROM personBOT WHERE telegram_id = %s ;", (telegram_id,)) 
+        cur.execute("SELECT * FROM personBOT WHERE telegram_id = %s", (telegram_id,)) 
         user = cur.fetchone()
         return user
     
-    def all_info(telegram_id):
-        cur.execute("SELECT * FROM personBOT WHERE telegram_id = %s;", (telegram_id,))
-        info = cur.fetchone()
-    
+    def update_balance(balance, telegram_id):
+        cur.execute("UPDATE personBOT SET balance = %s WHERE telegram_id = %s", (balance,telegram_id))
+        
 
 except Exception as _ex:
     print("[INFO!] Error while working with PostgreSQL", _ex)

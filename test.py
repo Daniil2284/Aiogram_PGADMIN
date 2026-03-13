@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from databaseTESTBOT import add_user, check_user_register, all_info
+from databaseTESTBOT import add_user, check_user_register, update_balance
 from config import TOKEN
 
 
@@ -51,8 +51,14 @@ async def register_user(message: types.Message):
 {user_data[2]}
 
 """)
-       
 
+@dp.message(Command("work"))
+async def working(message: types.Message):
+    telegram_id = message.from_user.id
+    user_data = check_user_register(telegram_id)
+    balance = int(user_data[2]) + 100
+    update_balance(balance, telegram_id)
+    await message.answer(f"Your balance {balance}")
 
 
 
@@ -68,7 +74,6 @@ async def get_new_variable(callback: CallbackQuery):
         "You chose Option 1",
         reply_markup= second_button()
     )
-
 
 
 # Запуск процесса поллинга новых апдейтов
