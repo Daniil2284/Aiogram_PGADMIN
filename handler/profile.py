@@ -14,8 +14,13 @@ def profile_user(dp):
         try:
 
             user_data = check_user_register(telegram_id)
-
+            exp = user_data[14] or 0
+            max_exp = user_data[15] or 1000
+            percent_blocks = int((exp / max_exp) * 10)
+            percent_real = (exp / max_exp) * 100
+            progress_bar = "🟩" * percent_blocks  + "⬜" * (10 - percent_blocks )
             profile_text = f"""
+
     📊 <b>Твой профиль:</b>
 
     🆔 ID: {user_data[0]}
@@ -35,8 +40,9 @@ def profile_user(dp):
     📈 Депозит: {user_data[11] } ₽
 
     🎮 Уровень: {user_data[13]}
-    📈 Опыт: {0}/{0} ({0}%)
-    📅 Регистрация: {user_data[15]:.1f if len(user_data) > 15 else 'Неизвестно'}
+    📈 Опыт: {exp}/{max_exp} ({percent_real:.1f}%)
+    {progress_bar})
+    📅 Регистрация: {user_data[16] if len(user_data) > 16 else 'Неизвестно'}
                     """
 
 

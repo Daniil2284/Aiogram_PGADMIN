@@ -2,7 +2,9 @@ from datetime import datetime, timedelta
 import random 
 
 salary = [random.randint(10,100),random.randint(100,500),random.randint(500,1500),random.randint(1500,3000)]
-add_exp = [random.randint(1,10)]
+add_exp = [random.randint(1000,10000),random.randint(100,500),random.randint(100,500),random.randint(100,500),random.randint(100,500)]
+level_work = [3, 5, 10, 15, 20]
+
 
 work_cooldown = {}
 async def delay_work(telegram_id, callback: CallbackQuery):
@@ -23,3 +25,4 @@ async def delay_work(telegram_id, callback: CallbackQuery):
         
     work_cooldown[telegram_id] = now
     return True
+

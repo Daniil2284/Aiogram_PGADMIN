@@ -9,15 +9,24 @@ def line_button_test():
     ]
     return InlineKeyboardMarkup(inline_keyboard=inline_list)
 
-def line_button_work():
+def line_desc_button_work():
     keyboard = [
-        [InlineKeyboardButton(text="Работа 1", callback_data="work_level_1")],
-        [InlineKeyboardButton(text="Работа 2", callback_data="work_level_2")],
-        [InlineKeyboardButton(text="Работа 3", callback_data="work_level_3")],
-        [InlineKeyboardButton(text="Работа 4", callback_data="work_level_4")],
-        [InlineKeyboardButton(text="Работа 5", callback_data="work_level_5")],
+        [InlineKeyboardButton(text="🧹 Уборщик", callback_data="work_desc_level_1")],
+        [InlineKeyboardButton(text="📦 Грузчик", callback_data="work_desc_level_2")],
+        [InlineKeyboardButton(text="🚕 Таксист", callback_data="work_desc_level_3")],
+        [InlineKeyboardButton(text="🚚 Дальнобойщик", callback_data="work_desc_level_4")],
+        [InlineKeyboardButton(text="🚄 Водитель электропоезда", callback_data="work_desc_level_5")],
         [InlineKeyboardButton(text="Назад", callback_data="back")]
     ]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+def line_button_work(callback_data1):
+    
+    keyboard = [
+        [InlineKeyboardButton(text="🔶 Начать работу", callback_data=callback_data1)],
+        [InlineKeyboardButton(text="⬅ Назад", callback_data="back")]
+    ]
+
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 def line_button_profile():

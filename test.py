@@ -1,23 +1,28 @@
 import asyncio
 import logging
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters.command import Command
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo, CallbackQuery
-from aiogram.utils.keyboard import InlineKeyboardBuilder
-from databaseTESTBOT import add_user, check_user_register, update_balance
+from aiogram import Bot, Dispatcher
 from config import TOKEN
-import button_work
+
 
 from handler.work_handler import work_handler_main
 from handler.profile import profile_user
 from handler.register import register_user
 
-
-
 logging.basicConfig(level=logging.INFO)
-# session = AiohttpSession(api=TelegramAPIServer.from_base("http://localhost:8081", is_local=True))
 bot = Bot(token=TOKEN)
+
 dp = Dispatcher()
+
+register_user(dp)
+profile_user(dp)
+work_handler_main(dp)
+
+# connector = ProxyConnector.from_url("socks5://127.0.0.1:10808")
+# session = AiohttpSession(connector=connector)
+
+# # session = AiohttpSession(api=TelegramAPIServer.from_base("http://localhost:8081", is_local=True))
+# bot = Bot(token=TOKEN,session=session)
+# dp = Dispatcher()
 
 # def line_button():
 #     inline_list = [
@@ -35,9 +40,6 @@ dp = Dispatcher()
 #     ]
 #     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-register_user(dp)
-profile_user(dp)
-work_handler_main(dp)
 
 
 # @dp.message(Command("work"))

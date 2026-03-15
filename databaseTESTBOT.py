@@ -35,12 +35,13 @@ try:
 
                 level INT DEFAULT 1,
                 exp INT DEFAULT 0,
+                max_exp INT DEFAULT 1000,
 
                 date_register TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )""") 
 
     def add_user(telegram_id, name, username):
-        cur.execute("INSERT INTO personBOT (telegram_id, name, username, balance, level, exp) VALUES (%s,%s,%s, 1000, 1, 0) ON CONFLICT (telegram_id) DO NOTHING", (telegram_id, name, username))
+        cur.execute("INSERT INTO personBOT (telegram_id, name, username, balance, level, exp, max_exp) VALUES (%s,%s,%s, 1000, 1, 0, 1000) ON CONFLICT (telegram_id) DO NOTHING", (telegram_id, name, username))
 
     def check_user_register(telegram_id):
         cur.execute("SELECT * FROM personBOT WHERE telegram_id = %s", (telegram_id,)) 
@@ -49,7 +50,16 @@ try:
     
     def update_balance(balance, telegram_id):
         cur.execute("UPDATE personBOT SET balance = %s WHERE telegram_id = %s", (balance,telegram_id))
-        
+    
+    def update_exp(exp, telegram_id):
+        cur.execute("UPDATE personBOT SET exp = %s WHERE telegram_id = %s", (exp, telegram_id))
+
+    def update_level(level, telegram_id):
+        cur.execute("UPDATE personBOT SET level = %s WHERE telegram_id = %s", (level, telegram_id))    
+    
+    def update_max_exp(max_exp, telegram_id):
+        cur.execute("UPDATE personBOT SET max_exp = %s WHERE telegram_id = %s", (max_exp, telegram_id))    
+    
 
 except Exception as _ex:
     print("[INFO!] Error while working with PostgreSQL", _ex)
