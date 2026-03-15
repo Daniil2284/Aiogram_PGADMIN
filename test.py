@@ -6,74 +6,64 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from databaseTESTBOT import add_user, check_user_register, update_balance
 from config import TOKEN
+import button_work
+
+from handler.work_handler import work_handler_main
+from handler.profile import profile_user
+from handler.register import register_user
 
 
 
 logging.basicConfig(level=logging.INFO)
-
+# session = AiohttpSession(api=TelegramAPIServer.from_base("http://localhost:8081", is_local=True))
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-def line_button():
-    inline_list = [
-        [InlineKeyboardButton(text="test", url='https://habr.com/ru/articles/820877/')],
-        [InlineKeyboardButton(text="test2", url='https://habr.com/ru/articles/820877/')],
-        [InlineKeyboardButton(text="test3", url='https://habr.com/ru/articles/820877/')],
-        [InlineKeyboardButton(text="CLICK HERE", callback_data="Variant1")]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=inline_list)
+# def line_button():
+#     inline_list = [
+#         [InlineKeyboardButton(text="test", url='https://habr.com/ru/articles/820877/')],
+#         [InlineKeyboardButton(text="test2", url='https://habr.com/ru/articles/820877/')],
+#         [InlineKeyboardButton(text="test3", url='https://habr.com/ru/articles/820877/')],
+#         [InlineKeyboardButton(text="CLICK HERE", callback_data="Variant1")]
+#     ]
+#     return InlineKeyboardMarkup(inline_keyboard=inline_list)
 
-def second_button():
-    keyboard = [
-        [InlineKeyboardButton(text="Button A", callback_data="A")],
-        [InlineKeyboardButton(text="Button B", callback_data="B")]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+# def second_button():
+#     keyboard = [
+#         [InlineKeyboardButton(text="Button A", callback_data="A")],
+#         [InlineKeyboardButton(text="Button B", callback_data="B")]
+#     ]
+#     return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+register_user(dp)
+profile_user(dp)
+work_handler_main(dp)
 
 
-@dp.message(Command("start"))
-async def send_welcome(message: types.Message):
-    await message.answer("Hi")
+# @dp.message(Command("work"))
+# async def working(message: types.Message):
+#     button_work.line_button_work()
 
-@dp.message(Command("register"))
-async def register_user(message: types.Message):
-    
-    telegram_id = message.from_user.id
-    user_data = check_user_register(telegram_id)
-    name = message.from_user.first_name
-    if user_data is None:
-        add_user(telegram_id, name)
-        await message.answer("You are successfully registered!")
-    else:
-        await message.answer(f"""Welcome  
-{user_data[0]}\n
-{user_data[1]}\n
-{user_data[2]}
-
-""")
-
-@dp.message(Command("work"))
-async def working(message: types.Message):
-    telegram_id = message.from_user.id
-    user_data = check_user_register(telegram_id)
-    balance = int(user_data[2]) + 100
-    update_balance(balance, telegram_id)
-    await message.answer(f"Your balance {balance}")
+#     telegram_id = message.from_user.id
+#     user_data = check_user_register(telegram_id)
+#     balance = int(user_data[2]) + 100
+#     update_balance(balance, telegram_id)
+#     await message.answer(f"Your balance {balance}")
 
 
 
 #Кнопки инлайн (под сообщением)
-@dp.message(Command("123"))
-async def get_button(message: types.Message):
-    await message.answer("123", reply_markup=line_button())
+# @dp.message(Command("123"))
+# async def get_button(message: types.Message):
+#     await message.answer("123", reply_markup=line_button())
 
-#Изменяем кнопки (под сообщением)
-@dp.callback_query(lambda c: c.data == "Variant1")
-async def get_new_variable(callback: CallbackQuery):
-    await callback.message.edit_text(
-        "You chose Option 1",
-        reply_markup= second_button()
-    )
+# #Изменяем кнопки (под сообщением)
+# @dp.callback_query(lambda c: c.data == "Variant1")
+# async def get_new_variable(callback: CallbackQuery):
+#     await callback.message.edit_text(
+#         "You chose Option 1",
+#         reply_markup= second_button()
+#     )
 
 
 # Запуск процесса поллинга новых апдейтов
